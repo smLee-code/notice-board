@@ -8,13 +8,15 @@ import axios from 'axios';
 function LoginPage() {
 
     const [loginData, setLoginData] = useState({
-            loginId : '',
-            password : '',
+        loginId : '',
+        password : '',
+
     });
 
     const [error, setError] = useState('');
 
     const handleInputChange = (e) => {
+
         const { name, value } = e.target;
 
         setLoginData({
@@ -51,7 +53,7 @@ function LoginPage() {
                 placeholder='아이디'
                 onChange={handleInputChange}
                 value={loginData.loginId}
-                name='userId'
+                name='loginId'
             />
             <p>비밀번호 : </p>
             <UserInput
@@ -59,7 +61,7 @@ function LoginPage() {
                 placeholder='비밀번호'
                 onChange={handleInputChange}
                 value={loginData.password}
-                name='userPw'
+                name='password'
             />
             <div>
                 <button onClick={handleLogin}>로그인</button>
