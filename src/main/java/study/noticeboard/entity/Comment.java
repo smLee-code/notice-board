@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Getter
 public class Comment {
 
-
     @Id @GeneratedValue
     @Column(name = "comment_id")
     private Long id;

@@ -1,31 +1,45 @@
 package study.noticeboard.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 
-import java.security.Timestamp;
+
 import java.time.LocalDateTime;
 
-@Entity
+@Entity @Table(name = "users")
 @Getter
 public class User {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
 
+    @Column(nullable = false, unique = true)
+    private String loginId;
+
+    @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false, unique = true)
     private String username;
+
+    @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(nullable = false)
     private LocalDateTime createdAt;
 
 
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now(); // 저장 시 현재 시간을 설정
+    }
+
     // Setter
+    public void setLoginId(String loginId) {
+        this.loginId = loginId;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }

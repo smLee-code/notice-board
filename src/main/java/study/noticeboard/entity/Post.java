@@ -26,6 +26,7 @@ public class Post {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+
     // Setter
     public void setTitle(String title) {
         this.title = title;
