@@ -1,16 +1,17 @@
 
 import React, { useState } from "react";
-import {Link} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import UserInput from "../component/UserInput";
 import axios from 'axios';
 
 
-function LoginPage() {
+function LoginPage(props) {
+
+    const navigate = useNavigate();
 
     const [loginData, setLoginData] = useState({
         loginId : '',
         password : '',
-
     });
 
     const [error, setError] = useState('');
@@ -30,24 +31,23 @@ function LoginPage() {
         try {
             const response = await axios.post('http://localhost:8080/api/user/login', loginData);
 
-            // 성공적인 로그인 처리
+
             if (response.status === 200) {
-                alert('로그인 성공!');
-                // 토큰 저장 또는 리다이렉트 처리
+                //
+                const { loginId, username } = response.data;
+                props.setUserData({loginId, username});
+                alert(`${username} 님이 로그인 하셨습니다.`);
+                navigate('/');
             }
         } catch (err) {
-            // 실패 시 에러 처리
             setError('로그인 실패: 아이디나 비밀번호를 확인하세요.');
-
         }
 
     };
 
-
     return (
         <div>
             <h1>로그인 페이지</h1>
-            <Link to='/'>홈</Link>
             <p>아이디 : </p>
             <UserInput
                 type='text'

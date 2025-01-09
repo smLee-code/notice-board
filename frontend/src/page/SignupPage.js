@@ -46,8 +46,6 @@ function SignupPage() {
         <div>
             <div>
                 <h1>회원가입 페이지</h1>
-                <Link to='/'>홈</Link>
-
                 <p>아이디 : </p>
                 <UserInput
                     type='text'
