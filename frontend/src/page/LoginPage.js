@@ -31,7 +31,6 @@ function LoginPage(props) {
         try {
             const response = await axios.post('http://localhost:8080/api/user/login', loginData);
 
-
             if (response.status === 200) {
                 //
                 const { loginId, username } = response.data;

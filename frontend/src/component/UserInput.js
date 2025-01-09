@@ -9,6 +9,7 @@ const UserInput = (props) => {
             onChange={props.onChange}
             value={props.value}
             name={props.name}
+            size={props.size}
         />
     );
 };

@@ -22,6 +22,7 @@ const UserLogInOut = (props) => {
                 &nbsp; | &nbsp;
                 {props.username}님 환영합니다. &nbsp;
                 <button onClick={handleLogOut}>로그아웃</button>
+                <hr/>
             </>
         );
     }
@@ -33,6 +34,7 @@ const UserLogInOut = (props) => {
                 <Link to='/login' setUserData={props.setUserData}>로그인</Link>
                 &nbsp; | &nbsp;
                 <Link to='/signup'>회원가입</Link>
+                <hr/>
             </>
         );
     }
