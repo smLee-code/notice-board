@@ -1,10 +1,12 @@
 
 import React, { useState } from "react";
-import {Link} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import UserInput from "../component/UserInput";
 import axios from "axios";
 
 function SignupPage() {
+
+    const navigate = useNavigate();
 
     const [registerData, setRegisterData] = useState({
         loginId : '',
@@ -30,14 +32,13 @@ function SignupPage() {
         try {
             const response = await axios.post('http://localhost:8080/api/user/register', registerData);
 
-            // 성공적인 로그인 처리
             if (response.status === 200) {
-                console.log(response.data); // JSON 객체 출력
-                alert(response.data || '회원가입 성공!'); // 메시지 출력
-                // 토큰 저장 또는 리다이렉트 처리
+                console.log(response.data);
+                alert(response.data || '회원가입 성공!');
+                navigate('/');
             }
         } catch (err) {
-            console.error(err.response.data); // 에러 메시지 확인
+            console.error(err.response.data);
             setError('회원가입 실패 : ' + err.response.data);
         }
     }

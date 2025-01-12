@@ -10,11 +10,12 @@ import java.time.LocalDateTime;
 @Getter
 public class Post {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
 
     private String title;
@@ -25,6 +26,17 @@ public class Post {
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    public Post(User user, String title, String content, Long views, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.user = user;
+        this.title = title;
+        this.content = content;
+        this.views = views;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    protected Post() { }
 
 
     // Setter

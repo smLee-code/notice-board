@@ -27,7 +27,10 @@ public class UserApiController {
 
         // System.out.println("Register Data: " + registerRequestDto);
 
-        if (registerRequestDto.getLoginId() == null || registerRequestDto.getPassword() == null || registerRequestDto.getUsername() == null || registerRequestDto.getEmail() == null) {
+        if (registerRequestDto.getLoginId() == null
+                || registerRequestDto.getPassword() == null
+                || registerRequestDto.getUsername() == null
+                || registerRequestDto.getEmail() == null) {
             throw new IllegalArgumentException("필수 필드가 누락되었습니다.");
         }
 
@@ -42,16 +45,27 @@ public class UserApiController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequestDto loginRequestDto) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody LoginRequestDto loginRequestDto) {
 
         try {
+
             User user = userService.login(
                     loginRequestDto.getLoginId(),
                     loginRequestDto.getPassword()
             );
-            return ResponseEntity.ok(user.getUsername() + " 님이 로그인 하셨습니다.");
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("loginId", user.getLoginId());
+            response.put("username", user.getUsername());
+
+            return ResponseEntity.ok(response);
+
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", e.getMessage());
+
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
         }
     }
 

@@ -6,6 +6,8 @@ import HomePage from './page/HomePage'
 import LoginPage from './page/LoginPage'
 import SignupPage from './page/SignupPage'
 import WritingPage from "./page/WritingPage";
+import BoardPage from "./page/BoardPage";
+import PostPage from "./page/PostPage";
 
 import UserLogInOut from "./component/UserLogInOut";
 
@@ -34,6 +36,8 @@ function App() {
                         username={userData.username}
                     />}
                 />
+                <Route path="/board" element={<BoardPage/>}/>
+                <Route path="/post" element={<PostPage/>}/>
             </Routes>
         </BrowserRouter>
     );
