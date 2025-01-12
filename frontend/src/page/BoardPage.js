@@ -9,9 +9,9 @@ function BoardPage() {
     const navigate = useNavigate();
 
     const [noticeList, setNoticeList] = useState([]);
-
     const [page, setPage] = useState(1);
     const [maxPage, setMaxPage] = useState(1);
+    const [inputValue, setInputValue] = useState(1);
 
 
     const getNoticeList = async (currentPage) => {
@@ -34,24 +34,6 @@ function BoardPage() {
         }
     }
 
-
-
-    // useEffect(() => {
-    //
-    //     setPrevArrow(
-    //         page === 1
-    //             ? <span> </span>
-    //             : <span onClick={() => setPage(page - 1)}>&lt;&lt;</span>
-    //     );
-    //
-    //     setNextArrow(
-    //         page === maxPage
-    //             ? <span> </span>
-    //             : <span onClick={() => setPage(page + 1)}>&gt;&gt;</span>
-    //     );
-    //
-    // }, [page, maxPage]);
-
     useEffect(() => {
         const initializeData = async () => {
             await getMaxPage();
@@ -66,14 +48,37 @@ function BoardPage() {
         getNoticeList(newPage);
     };
 
-    const handleInputChange = (e) => {
-        const inputValue = e.target.value;
-        const parsedValue = parseInt(inputValue, 10);
 
-        if (!isNaN(parsedValue)) {
-            handlePageChange(parsedValue); // 입력값을 정수로 변환 후 페이지 변경
+    /////////////////
+
+    const updatePage = (newPage) => {
+
+        if (newPage < 1)
+            newPage = 1;
+
+        if (newPage > maxPage)
+            newPage = maxPage;
+
+        setPage(newPage); // page 상태 업데이트
+        setInputValue(newPage); // input 값도 동기화
+        getNoticeList(newPage); // 쿼리 요청
+
+    };
+
+    const handleInputChange = (e) => {
+        setInputValue(e.target.value);
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter") {
+            const newPage = parseInt(inputValue, 10); // 정수로 변환
+            if (!isNaN(newPage)) {
+                updatePage(newPage);
+            } else {
+                alert("유효한 숫자를 입력하세요.");
+            }
         }
-    }
+    };
 
     return (
         <div>
@@ -92,7 +97,7 @@ function BoardPage() {
 
                 <div>
                     {page > 1 ? (
-                        <span onClick={() => handlePageChange(page - 1)}>&lt;&lt;</span>
+                        <span onClick={() => updatePage(page - 1)}>&lt;&lt;</span>
                     ) : (
                         <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     )}
@@ -100,15 +105,15 @@ function BoardPage() {
                     <input
                         type="number"
                         name='page'
-                        size="100"
-                        value={page}
+                        sizee="100"
+                        value={inputValue}
                         onChange={handleInputChange}
-                        min="1"
-                        max={maxPage}
+                        onKeyDown={handleKeyDown}
+                        style={{ width: "50px", textAlign: "center" }}
                     />
                     <span> / {maxPage}</span>
                     {page < maxPage ? (
-                        <span onClick={() => handlePageChange(page + 1)}>&gt;&gt;</span>
+                        <span onClick={() => updatePage(page + 1)}>&gt;&gt;</span>
                     ) : (
                         <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     )}
