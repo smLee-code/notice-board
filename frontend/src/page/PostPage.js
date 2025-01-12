@@ -1,10 +1,11 @@
-import {useEffect, useState} from "react";
-import {useSearchParams} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import axios from "axios";
 
 
 function PostPage() {
 
+    const navigate = useNavigate();
     const [postData, setPostData] = useState(null);
     const [searchParams] = useSearchParams();
     const post_id = searchParams.get('id');
@@ -28,6 +29,7 @@ function PostPage() {
         return (
             <>
                 <h1>포스트 페이지</h1>
+                <button onClick={() => navigate('/write')}>글쓰기</button>
                 <p>Loading post data...</p>;
             </>
         );
@@ -36,6 +38,7 @@ function PostPage() {
     return (
         <>
             <h1>포스트 페이지</h1>
+
             <div>
                 <h1>{postData.title}</h1>
                 <p>작성자 : {postData.username}</p>
@@ -43,6 +46,10 @@ function PostPage() {
                 <p>조회수 : {postData.views}</p>
                 <p>Created At: {new Date(postData.createdAt).toLocaleString()}</p>
                 <p>Updated At: {new Date(postData.updatedAt).toLocaleString()}</p>
+            </div>
+            <div>
+                <button onClick={() => navigate('/write')}>글쓰기</button>
+                <button onClick={() => navigate('/board')}>게시판</button>
             </div>
         </>
     );

@@ -38,7 +38,7 @@ public class PostRepository {
 
     public PostDto findById(Long id) {
         return em.createQuery(
-                "SELECT new study.noticeboard.dto.PostDto(p.id, u.id, p.title, p.content, p.views, p.createdAt, p.updatedAt) " +
+                "SELECT new study.noticeboard.dto.PostDto(p.id, u.username, p.title, p.content, p.views, p.createdAt, p.updatedAt) " +
                 "FROM Post p " +
                 "JOIN p.user u " +
                 "WHERE p.id = :id"
