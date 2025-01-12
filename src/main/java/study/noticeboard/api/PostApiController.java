@@ -1,0 +1,65 @@
+package study.noticeboard.api;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import study.noticeboard.dto.PostDto;
+import study.noticeboard.dto.SavePostRequestDto;
+import study.noticeboard.dto.SimplePostDto;
+import study.noticeboard.entity.Post;
+import study.noticeboard.service.PostService;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/post")
+@CrossOrigin(origins = "http://localhost:3000")
+public class PostApiController {
+
+    private final PostService postService;
+
+    public PostApiController(PostService postService) { this.postService = postService; }
+
+    @PostMapping("/save")
+    public ResponseEntity<String> save(@RequestBody SavePostRequestDto savePostRequestDto) {
+
+        try {
+            postService.savePost(savePostRequestDto);
+            return ResponseEntity.ok("게시글이 성공적으로 저장되었습니다.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/retrieve")
+    public List<SimplePostDto> retrievePostsByPage (
+            @RequestParam int page,
+            @RequestParam(required = false, defaultValue = "10") int size) {
+        return postService.getPostsByPage(page, size);
+    }
+
+    @GetMapping("/{post_id}")
+    public ResponseEntity<PostDto> retrievePostById(@PathVariable Long post_id) {
+        try {
+            PostDto postDto = postService.getPostById(post_id);
+            return ResponseEntity.ok(postDto);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+
+    @GetMapping("/maxpage")
+    public Long getMaxPage() {
+        Long pageNum = postService.getPostNum();
+
+        Long maxPage = pageNum / 10;
+
+        if (pageNum % 10 > 0) {
+            maxPage++;
+        }
+
+        return maxPage;
+    }
+}
