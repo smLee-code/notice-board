@@ -35,7 +35,7 @@ function SignupPage() {
             if (response.status === 200) {
                 console.log(response.data);
                 alert(response.data || '회원가입 성공!');
-                navigate('/');
+                navigate('/login');
             }
         } catch (err) {
             console.error(err.response.data);

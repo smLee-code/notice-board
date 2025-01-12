@@ -103,13 +103,12 @@ function BoardPage() {
                     )}
                     <span>페이지 : </span>
                     <input
-                        type="number"
+                        type="text"
                         name='page'
-                        sizee="100"
                         value={inputValue}
                         onChange={handleInputChange}
                         onKeyDown={handleKeyDown}
-                        style={{ width: "50px", textAlign: "center" }}
+                        style={{ width: "30px", textAlign: "center" }}
                     />
                     <span> / {maxPage}</span>
                     {page < maxPage ? (

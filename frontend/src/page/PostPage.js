@@ -42,7 +42,12 @@ function PostPage() {
             <div>
                 <h1>{postData.title}</h1>
                 <p>작성자 : {postData.username}</p>
-                <p>{postData.content}</p>
+                {postData.content.split("\n").map((line, index) => (
+                    <React.Fragment key={index}>
+                        {line}
+                        <br />
+                    </React.Fragment>
+                ))}
                 <p>조회수 : {postData.views}</p>
                 <p>Created At: {new Date(postData.createdAt).toLocaleString()}</p>
                 <p>Updated At: {new Date(postData.updatedAt).toLocaleString()}</p>

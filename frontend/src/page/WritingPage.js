@@ -37,7 +37,7 @@ function WritingPage(props) {
 
             if (response.status === 200) {
                 alert(`포스트가 저장되었습니다.`);
-                navigate('/');
+                navigate('/board');
             }
         } catch (err) {
             setError('포스트 저장 실패');
