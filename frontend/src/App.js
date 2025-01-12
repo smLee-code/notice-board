@@ -37,7 +37,7 @@ function App() {
                     />}
                 />
                 <Route path="/board" element={<BoardPage/>}/>
-                <Route path="/post" element={<PostPage/>}/>
+                <Route path="/post/*" element={<PostPage/>}/>
             </Routes>
         </BrowserRouter>
     );

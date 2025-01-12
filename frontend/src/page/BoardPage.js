@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import UserInput from "../component/UserInput";
+
 import {Link, useNavigate} from "react-router-dom";
 
 
@@ -12,9 +12,6 @@ function BoardPage() {
 
     const [page, setPage] = useState(1);
     const [maxPage, setMaxPage] = useState(1);
-
-    const [prevArrow, setPrevArrow] = useState(<span> </span>);
-    const [nextArrow, setNextArrow] = useState(<span> </span>);
 
 
     const getNoticeList = async (currentPage) => {
@@ -69,13 +66,23 @@ function BoardPage() {
         getNoticeList(newPage);
     };
 
+    const handleInputChange = (e) => {
+        const inputValue = e.target.value;
+        const parsedValue = parseInt(inputValue, 10);
+
+        if (!isNaN(parsedValue)) {
+            handlePageChange(parsedValue); // 입력값을 정수로 변환 후 페이지 변경
+        }
+    }
+
     return (
         <div>
             <h1>게시판 페이지</h1>
             <div>
-                <p>게시글 목록</p>
+                <p>게시글 목록 <button onClick={() => navigate('/write')}>글쓰기</button> </p>
+
                 <ul>
-                    {noticeList.map((notice) => (
+                {noticeList.map((notice) => (
                         <li key={notice.id}>
                             제목 : <Link to={`/post/detail?id=${notice.id}`}>{notice.title}</Link>
                             &nbsp; | 글쓴이 : {notice.username}
@@ -87,24 +94,26 @@ function BoardPage() {
                     {page > 1 ? (
                         <span onClick={() => handlePageChange(page - 1)}>&lt;&lt;</span>
                     ) : (
-                        <span> </span>
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     )}
                     <span>페이지 : </span>
                     <input
                         type="number"
                         name='page'
+                        size="100"
                         value={page}
-                        onChange={handlePageChange}
-                        size="50"
+                        onChange={handleInputChange}
+                        min="1"
+                        max={maxPage}
                     />
                     <span> / {maxPage}</span>
                     {page < maxPage ? (
                         <span onClick={() => handlePageChange(page + 1)}>&gt;&gt;</span>
                     ) : (
-                        <span> </span>
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     )}
                 </div>
-                <button onClick={() => navigate('/write')}>글쓰기</button>
+
             </div>
         </div>
     );
