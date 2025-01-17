@@ -51,4 +51,21 @@ public class PostRepository {
         return em.createQuery("select count(p) from Post p", Long.class)
                 .getSingleResult();
     }
+
+    public boolean existsById(Long postId) {
+        Long count = em.createQuery(
+                "SELECT COUNT(p) FROM Post p WHERE p.id = :id"
+                ,Long.class)
+                .setParameter("id", postId)
+                .getSingleResult();
+
+        return count > 0;
+    }
+
+    public void deleteById(Long postId) {
+        em.createQuery(
+                "DELETE FROM Post p WHERE p.id = :id")
+                .setParameter("id", postId)
+                .executeUpdate();
+    }
 }

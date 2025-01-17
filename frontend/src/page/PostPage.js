@@ -25,6 +25,28 @@ function PostPage(props) {
         }
     }, [post_id]); // post_id 변경 시 재요청
 
+    const deletePost = async () => {
+
+        try {
+            const response = await axios.delete(`http://localhost:8080/api/post/delete/${post_id}`);
+            console.log("삭제 시도");
+            if (response.status === 200) {
+                console.log("삭제 성공:", response.data); // 서버에서 반환된 메시지 출력
+                alert("삭제되었습니다."); // 사용자에게 알림
+                navigate('/board');
+            }
+        } catch (error) {
+            //if (error.response && error.response.status === 404) {
+                console.error("삭제 실패: 포스트를 찾을 수 없습니다.");
+                alert("해당 포스트가 존재하지 않습니다.");
+            //}
+        }
+    }
+
+    const updatePost = async () => {
+
+    }
+
     if (!postData) {
         return (
             <>
@@ -43,8 +65,8 @@ function PostPage(props) {
                 {postData.userId === props.id ? (
                     <>
                         <span> id 일치</span>
-                        <button> 삭제 </button>
-                        <button> 수정 </button>
+                        <button onClick={deletePost}> 삭제 </button>
+                        <button onClick={updatePost}> 수정 </button>
                     </>
                 ) : (
                     <span> id 불일치 </span>

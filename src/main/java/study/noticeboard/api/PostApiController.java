@@ -62,4 +62,16 @@ public class PostApiController {
 
         return maxPage;
     }
+
+    @DeleteMapping("/delete/{post_id}")
+    public ResponseEntity<String> deletePostById(@PathVariable Long post_id) {
+
+        try {
+            postService.deletePostById(post_id);
+            return ResponseEntity.ok("삭제 성공");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }

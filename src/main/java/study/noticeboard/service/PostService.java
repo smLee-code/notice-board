@@ -67,4 +67,14 @@ public class PostService {
     public Long getPostNum() {
         return postRepository.countAll();
     }
+
+    @Transactional
+    public void deletePostById(Long postId) {
+
+        if (postRepository.existsById(postId)) {
+            postRepository.deleteById(postId);
+        } else {
+            throw new IllegalArgumentException("해당 id의 포스트가 존재하지 않습니다.");
+        }
+    }
 }
