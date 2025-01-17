@@ -33,8 +33,8 @@ function LoginPage(props) {
 
             if (response.status === 200) {
                 //
-                const { loginId, username } = response.data;
-                props.setUserData({loginId, username});
+                const { id, username } = response.data;
+                props.setUserData({id, username});
                 alert(`${username} 님이 로그인 하셨습니다.`);
                 navigate('/');
             }

@@ -14,6 +14,7 @@ import UserLogInOut from "./component/UserLogInOut";
 function App() {
 
     const [userData, setUserData] = useState({
+        id : 0,
         loginId : '',
         username : ''
     });
@@ -37,7 +38,10 @@ function App() {
                     />}
                 />
                 <Route path="/board" element={<BoardPage/>}/>
-                <Route path="/post/*" element={<PostPage/>}/>
+                <Route path="/post/*"
+                       element={<PostPage
+                           id={userData.id}
+                       />}/>
             </Routes>
         </BrowserRouter>
     );

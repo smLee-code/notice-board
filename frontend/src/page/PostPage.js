@@ -3,7 +3,7 @@ import {useNavigate, useSearchParams} from "react-router-dom";
 import axios from "axios";
 
 
-function PostPage() {
+function PostPage(props) {
 
     const navigate = useNavigate();
     const [postData, setPostData] = useState(null);
@@ -13,9 +13,9 @@ function PostPage() {
     const getPostData = async () => {
         try {
             const response = await axios.get(`http://localhost:8080/api/post/${post_id}`);
-            setPostData(response.data); // 데이터 상태 업데이트
+            setPostData(response.data);
         } catch (error) {
-            console.error("Error fetching post data:", error);
+            console.error("에러 : 해당 포스트가 존재하지 않습니다.:", error);
         }
     }
 
@@ -38,9 +38,17 @@ function PostPage() {
     return (
         <>
             <h1>포스트 페이지</h1>
-
             <div>
-                <h1>{postData.title}</h1>
+            <h1>{postData.title}</h1>
+                {postData.userId === props.id ? (
+                    <>
+                        <span> id 일치</span>
+                        <button> 삭제 </button>
+                        <button> 수정 </button>
+                    </>
+                ) : (
+                    <span> id 불일치 </span>
+                )}
                 <p>작성자 : {postData.username}</p>
                 {postData.content.split("\n").map((line, index) => (
                     <React.Fragment key={index}>
