@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import study.noticeboard.dto.PostDto;
 import study.noticeboard.dto.SavePostRequestDto;
 import study.noticeboard.dto.SimplePostDto;
+import study.noticeboard.dto.UpdatePostRequestDto;
 import study.noticeboard.entity.Post;
 import study.noticeboard.service.PostService;
 
@@ -32,6 +33,17 @@ public class PostApiController {
         }
     }
 
+    @PatchMapping("/update")
+    public ResponseEntity<String> update(@RequestBody UpdatePostRequestDto updatePostRequestDto) {
+
+        try {
+            postService.updatePost(updatePostRequestDto);
+            return ResponseEntity.ok("게시글이 성공적으로 수정되었습니다.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @GetMapping("/retrieve")
     public List<SimplePostDto> retrievePostsByPage (
             @RequestParam int page,
@@ -52,11 +64,11 @@ public class PostApiController {
 
     @GetMapping("/maxpage")
     public Long getMaxPage() {
-        Long pageNum = postService.getPostNum();
+        Long postNum = postService.getPostNum();
 
-        Long maxPage = pageNum / 10;
+        Long maxPage = postNum / 10;
 
-        if (pageNum % 10 > 0) {
+        if (postNum % 10 > 0) {
             maxPage++;
         }
 

@@ -2,7 +2,6 @@ package study.noticeboard.dto;
 
 public class LoginRequestDto {
 
-    private Long id;
     private String loginId;
     private String password;
 
@@ -12,8 +11,6 @@ public class LoginRequestDto {
     }
 
     // Getter, Setter
-    public Long getId() { return id; }
-
     public String getLoginId() {
         return loginId;
     }

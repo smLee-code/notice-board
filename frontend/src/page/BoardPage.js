@@ -8,20 +8,20 @@ function BoardPage() {
 
     const navigate = useNavigate();
 
-    const [noticeList, setNoticeList] = useState([]);
+    const [postList, setPostList] = useState([]);
     const [page, setPage] = useState(1);
     const [maxPage, setMaxPage] = useState(1);
     const [inputValue, setInputValue] = useState(1);
 
 
-    const getNoticeList = async (currentPage) => {
+    const getPostList = async (currentPage) => {
 
         const response = await axios.get(
             'http://localhost:8080/api/post/retrieve',
             {params: { page : currentPage, size : 10 }}
         );
 
-        setNoticeList(response.data);
+        setPostList(response.data);
     }
 
     const getMaxPage = async () => {
@@ -37,17 +37,11 @@ function BoardPage() {
     useEffect(() => {
         const initializeData = async () => {
             await getMaxPage();
-            await getNoticeList(1);
+            await getPostList(1);
         };
 
         initializeData();
     }, []);
-
-    const handlePageChange = (newPage) => {
-        setPage(newPage);
-        getNoticeList(newPage);
-    };
-
 
     /////////////////
 
@@ -61,7 +55,7 @@ function BoardPage() {
 
         setPage(newPage); // page 상태 업데이트
         setInputValue(newPage); // input 값도 동기화
-        getNoticeList(newPage); // 쿼리 요청
+        getPostList(newPage); // 쿼리 요청
 
     };
 
@@ -87,10 +81,10 @@ function BoardPage() {
                 <p>게시글 목록 <button onClick={() => navigate('/write')}>글쓰기</button> </p>
 
                 <ul>
-                {noticeList.map((notice) => (
-                        <li key={notice.id}>
-                            제목 : <Link to={`/post/detail?id=${notice.id}`}>{notice.title}</Link>
-                            &nbsp; | 글쓴이 : {notice.username}
+                {postList.map((post) => (
+                        <li key={post.id}>
+                            제목 : <Link to={`/post/detail?id=${post.id}`}>{post.title}</Link>
+                            &nbsp; | 글쓴이 : {post.username}
                         </li>
                     ))}
                 </ul>

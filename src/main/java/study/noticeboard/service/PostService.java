@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import study.noticeboard.dto.PostDto;
 import study.noticeboard.dto.SavePostRequestDto;
 import study.noticeboard.dto.SimplePostDto;
+import study.noticeboard.dto.UpdatePostRequestDto;
 import study.noticeboard.entity.Post;
 import study.noticeboard.entity.User;
 import study.noticeboard.repository.PostRepository;
@@ -25,9 +26,9 @@ public class PostService {
 
 
     @Transactional
-    public Long savePost(SavePostRequestDto savePostRequestDto) {
+    public void savePost(SavePostRequestDto savePostRequestDto) {
 
-        User user = userRepository.findByLoginId(savePostRequestDto.getLoginId())
+        User user = userRepository.findByUserId(savePostRequestDto.getId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
 
         Post post = new Post(
@@ -40,12 +41,25 @@ public class PostService {
         );
 
         postRepository.save(post);
-        return post.getId();
+    }
+
+    @Transactional
+    public void updatePost(UpdatePostRequestDto updatePostRequestDto) {
+
+        PostDto findPostDto = postRepository.findById(updatePostRequestDto.getPostId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 포스트입니다."));
+
+        // 게시글 작성자와 현재 로그인된 사용자가 같은지 확인
+        if (!findPostDto.getUserId().equals(updatePostRequestDto.getUserId())) {
+            throw new IllegalStateException("게시글 수정 권한은 작성자에게만 있습니다. (작성자와 현재 사용자가 일치하지 않습니다.)");
+        }
+
+        postRepository.update(updatePostRequestDto);
     }
 
     public PostDto getPostById(Long postId) {
         try {
-            return postRepository.findById(postId);
+            return postRepository.findById(postId).get();
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("해당 게시글을 찾을 수 없습니다.");
         }
@@ -77,4 +91,6 @@ public class PostService {
             throw new IllegalArgumentException("해당 id의 포스트가 존재하지 않습니다.");
         }
     }
+
+
 }

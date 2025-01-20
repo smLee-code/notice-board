@@ -44,14 +44,13 @@ function PostPage(props) {
     }
 
     const updatePost = async () => {
-
+        navigate(`/edit/detail?id=${post_id}`)
     }
 
     if (!postData) {
         return (
             <>
                 <h1>포스트 페이지</h1>
-                <button onClick={() => navigate('/write')}>글쓰기</button>
                 <p>Loading post data...</p>;
             </>
         );

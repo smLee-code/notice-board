@@ -1,12 +1,15 @@
 package study.noticeboard.repository;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import study.noticeboard.dto.PostDto;
+import study.noticeboard.dto.UpdatePostRequestDto;
 import study.noticeboard.entity.Post;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class PostRepository {
@@ -18,9 +21,18 @@ public class PostRepository {
         em.persist(post);
     }
 
-    public void delete(Post post) {
-        em.remove(post);
+    public void update(UpdatePostRequestDto updatePostRequestDto) {
+        em.createQuery("UPDATE Post p " +
+                "SET p.title = :title, " +
+                "p.content = :content " +
+                "WHERE p.id = :postId AND p.user.id = :userId")
+                .setParameter("title", updatePostRequestDto.getTitle())
+                .setParameter("content", updatePostRequestDto.getContent())
+                .setParameter("userId", updatePostRequestDto.getUserId())
+                .setParameter("postId", updatePostRequestDto.getPostId())
+                .executeUpdate();
     }
+
 
     public List<Post> findAll() {
         return em.createQuery("select p from Post p", Post.class).getResultList();
@@ -36,15 +48,21 @@ public class PostRepository {
                 .getResultList();
     }
 
-    public PostDto findById(Long id) {
-        return em.createQuery(
+    public Optional<PostDto> findById(Long id) {
+
+        try {
+            PostDto findPostDto = em.createQuery(
                 "SELECT new study.noticeboard.dto.PostDto(p.id, u.id, u.username, p.title, p.content, p.views, p.createdAt, p.updatedAt) " +
                 "FROM Post p " +
                 "JOIN p.user u " +
                 "WHERE p.id = :id"
-                ,PostDto.class)
+                , PostDto.class)
                 .setParameter("id", id)
                 .getSingleResult();
+            return Optional.of(findPostDto);
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 
     public Long countAll() {
@@ -68,4 +86,6 @@ public class PostRepository {
                 .setParameter("id", postId)
                 .executeUpdate();
     }
+
+
 }

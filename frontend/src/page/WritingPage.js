@@ -1,5 +1,5 @@
 import UserInput from "../component/UserInput";
-import {useState} from "react";
+import React, {useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 
@@ -13,7 +13,7 @@ function WritingPage(props) {
         content : ''
     });
 
-    const [error, setError] = useState('');
+
 
     const handleInputChange = (e) => {
 
@@ -21,31 +21,29 @@ function WritingPage(props) {
 
         setPostData({
             ...postData,
-            [name] : value,
+            [name] : value
         });
     };
 
     const handleSavePost = async () => {
-
         const requestData = {
             ...postData, // title, content
-            loginId : props.loginId, // 유저 ID 추가
+            id : props.id, // 유저 ID 추가
         };
 
-        try {
-            const response = await axios.post('http://localhost:8080/api/post/save', requestData);
+        const response = await axios.post('http://localhost:8080/api/post/save', requestData);
 
-            if (response.status === 200) {
-                alert(`포스트가 저장되었습니다.`);
-                navigate('/board');
-            }
-        } catch (err) {
-            setError('포스트 저장 실패');
+        if (response.status === 200) {
+            alert(response.data);
+            navigate('/board');
+        } else {
+            alert(response.data);
         }
     }
 
     return (
         <>
+            <h1>글쓰기 페이지</h1>
             <div>
                 제목 : &nbsp;
                 <UserInput
