@@ -84,6 +84,10 @@ function PostPage(props) {
             <div>
                 <button onClick={() => navigate('/write')}>글쓰기</button>
                 <button onClick={() => navigate('/board')}>게시판</button>
+                <button onClick={() => navigate(`/comment/detail?id=${post_id}`)}>댓글</button>
+            </div>
+            <div>
+
             </div>
         </>
     );

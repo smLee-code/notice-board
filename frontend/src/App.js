@@ -9,6 +9,7 @@ import WritingPage  from "./page/WritingPage";
 import BoardPage    from "./page/BoardPage";
 import PostPage     from "./page/PostPage";
 import EditingPage  from "./page/EditingPage";
+import CommentPage from "./page/CommentPage";
 
 import UserLogInOut from "./component/UserLogInOut";
 
@@ -50,6 +51,7 @@ function App() {
                         id={userData.id}
                     />}
                 />
+                <Route path="/comment/*" element={<CommentPage/>}/>
             </Routes>
         </BrowserRouter>
     );

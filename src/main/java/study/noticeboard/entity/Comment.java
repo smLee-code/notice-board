@@ -28,19 +28,18 @@ public class Comment {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-
-    // Setter
-    public void setContent(String content) {
+    public Comment(User user, Post post, String content, Long likes, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.user = user;
+        this.post = post;
         this.content = content;
-    }
-
-    public void setLikes(Long likes) {
         this.likes = likes;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
+
+    protected Comment() { }
+
+
 
     //==연관관계 메서드==//
 
