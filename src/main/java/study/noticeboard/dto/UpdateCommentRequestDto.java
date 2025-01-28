@@ -5,9 +5,7 @@ import java.time.LocalDateTime;
 public class UpdateCommentRequestDto {
 
     private Long commentId;
-
     private String content;
-
     private LocalDateTime updatedAt;
 
     public UpdateCommentRequestDto(Long commentId, String content) {

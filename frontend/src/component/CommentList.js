@@ -7,7 +7,7 @@ const CommentList = (props) => {
 
     const [commentList, setCommentList] = useState([]);
     const [editingComment, setEditingComment] = useState({
-        id : null,
+        commentId : null,
         content : ''
     });
 
@@ -92,7 +92,7 @@ const CommentList = (props) => {
 
     const handleEditComment = (comment) => {
         setEditingComment({
-            id : comment.id,
+            commentId : comment.id,
             content : comment.content
         });
     }
@@ -106,7 +106,7 @@ const CommentList = (props) => {
 
     const initEditingComment = () => {
         setEditingComment({
-            id : null,
+            commentId : null,
             content : ''
         });
     }
@@ -122,7 +122,10 @@ const CommentList = (props) => {
             ...editingComment
         };
 
-        const response = await axios.patch(`http://localhost:8080/api/comment/update`, editData);
+        // alert(`수정 내용 : ${editData.content}\n`
+        // + `아이디 : ${editData.id}`);
+
+        await axios.patch(`http://localhost:8080/api/comment/update`, editData);
     }
 
     const handleSaveEdit = async () => {
@@ -131,8 +134,9 @@ const CommentList = (props) => {
             await updateComment();
 
             initEditingComment();
+            fetchCommentList();
         } catch (error) {
-
+            alert(error + "\n댓글 수정 : 실패")
         }
     };
 
@@ -143,7 +147,7 @@ const CommentList = (props) => {
             <ul>
                 {commentList.map((comment) => (
                     <li key={comment.id}>
-                        {editingComment.id === comment.id ? (
+                        {editingComment.commentId === comment.id ? (
                             <>
                                 <UserInput
                                     type='text'
