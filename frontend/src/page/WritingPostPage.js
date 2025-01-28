@@ -4,7 +4,7 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 
 
-function WritingPage(props) {
+function WritingPostPage(props) {
 
     const navigate = useNavigate();
 
@@ -28,16 +28,16 @@ function WritingPage(props) {
     const handleSavePost = async () => {
         const requestData = {
             ...postData, // title, content
-            id : props.id, // 유저 ID 추가
+            userId : props.userId, // 유저 ID 추가
         };
 
         const response = await axios.post('http://localhost:8080/api/post/save', requestData);
 
         if (response.status === 200) {
-            alert(response.data);
+            // alert(response.data);
             navigate('/board');
         } else {
-            alert(response.data);
+            // alert(response.data);
         }
     }
 
@@ -71,4 +71,4 @@ function WritingPage(props) {
     );
 }
 
-export default WritingPage;
+export default WritingPostPage;

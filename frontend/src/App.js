@@ -5,10 +5,10 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import HomePage     from './page/HomePage'
 import LoginPage    from './page/LoginPage'
 import SignupPage   from './page/SignupPage'
-import WritingPage  from "./page/WritingPage";
+import WritingPostPage  from "./page/WritingPostPage";
 import BoardPage    from "./page/BoardPage";
 import PostPage     from "./page/PostPage";
-import EditingPage  from "./page/EditingPage";
+import EditingPostPage  from "./page/EditingPostPage";
 
 
 import UserLogInOut from "./component/UserLogInOut";
@@ -35,20 +35,20 @@ function App() {
                 <Route path="/board" element={<BoardPage/>}/>
                 <Route
                     path="/write"
-                    element={<WritingPage
-                        id={userData.id}
+                    element={<WritingPostPage
+                        userId={userData.id}
                     />}
                 />
                 <Route
                     path="/post/*"
                     element={<PostPage
-                        id={userData.id}
+                        userId={userData.id}
                     />}
                 />
                 <Route
                     path="/edit/*"
-                    element={<EditingPage
-                        id={userData.id}
+                    element={<EditingPostPage
+                        userId={userData.id}
                     />}
                 />
             </Routes>

@@ -28,7 +28,7 @@ public class PostService {
     @Transactional
     public void savePost(SavePostRequestDto savePostRequestDto) {
 
-        User user = userRepository.findByUserId(savePostRequestDto.getId())
+        User user = userRepository.findByUserId(savePostRequestDto.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
 
         Post post = new Post(
@@ -46,7 +46,7 @@ public class PostService {
     @Transactional
     public void updatePost(UpdatePostRequestDto updatePostRequestDto) {
 
-        PostDto findPostDto = postRepository.findById(updatePostRequestDto.getPostId())
+        PostDto findPostDto = postRepository.findDtoById(updatePostRequestDto.getPostId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 포스트입니다."));
 
         // 게시글 작성자와 현재 로그인된 사용자가 같은지 확인
@@ -54,12 +54,14 @@ public class PostService {
             throw new IllegalStateException("게시글 수정 권한은 작성자에게만 있습니다. (작성자와 현재 사용자가 일치하지 않습니다.)");
         }
 
+        updatePostRequestDto.setUpdatedAt(LocalDateTime.now());
+
         postRepository.update(updatePostRequestDto);
     }
 
     public PostDto getPostById(Long postId) {
         try {
-            return postRepository.findById(postId).get();
+            return postRepository.findDtoById(postId).get();
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("해당 게시글을 찾을 수 없습니다.");
         }

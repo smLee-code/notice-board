@@ -1,5 +1,7 @@
 package study.noticeboard.dto;
 
+import java.time.LocalDateTime;
+
 public class UpdatePostRequestDto {
 
     private Long postId;
@@ -8,6 +10,8 @@ public class UpdatePostRequestDto {
     private String content;
 
     private Long userId;
+
+    private LocalDateTime updatedAt;
 
     public UpdatePostRequestDto(Long postId, String title, String content, Long userId) {
         this.postId = postId;
@@ -31,4 +35,8 @@ public class UpdatePostRequestDto {
     public Long getUserId() {
         return userId;
     }
+
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }

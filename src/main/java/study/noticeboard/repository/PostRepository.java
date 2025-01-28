@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import study.noticeboard.dto.PostDto;
 import study.noticeboard.dto.UpdatePostRequestDto;
 import study.noticeboard.entity.Post;
+import study.noticeboard.entity.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,12 +25,14 @@ public class PostRepository {
     public void update(UpdatePostRequestDto updatePostRequestDto) {
         em.createQuery("UPDATE Post p " +
                 "SET p.title = :title, " +
-                "p.content = :content " +
+                "p.content = :content, " +
+                "p.updatedAt = :updatedAt " +
                 "WHERE p.id = :postId AND p.user.id = :userId")
                 .setParameter("title", updatePostRequestDto.getTitle())
                 .setParameter("content", updatePostRequestDto.getContent())
                 .setParameter("userId", updatePostRequestDto.getUserId())
                 .setParameter("postId", updatePostRequestDto.getPostId())
+                .setParameter("updatedAt", updatePostRequestDto.getUpdatedAt())
                 .executeUpdate();
     }
 
@@ -39,7 +42,6 @@ public class PostRepository {
     }
 
     public List<Post> findByPage(int page, int size) {
-
         int offset = (page - 1) * size; // OFFSET 계산
 
         return em.createQuery("SELECT p FROM Post p ORDER BY p.id ASC", Post.class)
@@ -48,7 +50,7 @@ public class PostRepository {
                 .getResultList();
     }
 
-    public Optional<PostDto> findById(Long id) {
+    public Optional<PostDto> findDtoById(Long id) {
 
         try {
             PostDto findPostDto = em.createQuery(
@@ -60,6 +62,17 @@ public class PostRepository {
                 .setParameter("id", id)
                 .getSingleResult();
             return Optional.of(findPostDto);
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
+    }
+
+    public Optional<Post> findByPostId(Long postId) {
+        try {
+            Post findPost = em.createQuery("select p from Post p where p.id = :postId", Post.class)
+                    .setParameter("postId", postId)
+                    .getSingleResult();
+            return Optional.of(findPost);
         } catch (NoResultException e) {
             return Optional.empty();
         }
@@ -81,8 +94,7 @@ public class PostRepository {
     }
 
     public void deleteById(Long postId) {
-        em.createQuery(
-                "DELETE FROM Post p WHERE p.id = :id")
+        em.createQuery("DELETE FROM Post p WHERE p.id = :id")
                 .setParameter("id", postId)
                 .executeUpdate();
     }

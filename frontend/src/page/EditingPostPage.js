@@ -4,7 +4,7 @@ import {useNavigate, useSearchParams} from "react-router-dom";
 import axios from "axios";
 
 
-function EditingPage(props) {
+function EditingPostPage(props) {
 
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
@@ -14,11 +14,11 @@ function EditingPage(props) {
         content : ''
     });
 
-    const post_id = searchParams.get('id');
+    const postId = searchParams.get('id');
 
     const getPostData = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/post/${post_id}`);
+            const response = await axios.get(`http://localhost:8080/api/post/${postId}`);
             setPostData(response.data);
         } catch (error) {
             console.error("에러 : 해당 포스트가 존재하지 않습니다.:", error);
@@ -26,10 +26,10 @@ function EditingPage(props) {
     }
 
     useEffect(() => {
-        if (post_id) {
+        if (postId) {
             getPostData();
         }
-    }, [post_id]); // post_id 변경 시 재요청
+    }, [postId]); // post_id 변경 시 재요청
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -42,15 +42,15 @@ function EditingPage(props) {
     const handleUpdatePost = async () => {
         const editData = {
             ...postData,
-            userId : props.id,
-            postId : post_id
+            userId : props.userId,
+            postId : postId
         };
 
         const response = await axios.patch('http://localhost:8080/api/post/update', editData);
 
         if (response.status === 200) {
             alert(`포스트가 수정되었습니다.`);
-            navigate(`/post/detail?id=${post_id}`);
+            navigate(`/post/detail?id=${postId}`);
         } else {
             alert(`포스트 수정에 실패했습니다.`);
         }
@@ -97,5 +97,5 @@ function EditingPage(props) {
     );
 }
 
-export default EditingPage;
+export default EditingPostPage;
 
