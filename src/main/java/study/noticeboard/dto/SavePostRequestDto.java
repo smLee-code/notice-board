@@ -2,26 +2,22 @@ package study.noticeboard.dto;
 
 public class SavePostRequestDto {
 
+    private Long userId;
+
     private String title;
     private String content;
 
-    private String loginId;
 
-    public SavePostRequestDto(String title, String content, String loginId) {
+    public SavePostRequestDto(Long userId, String title, String content) {
+        this.userId = userId;
         this.title = title;
         this.content = content;
-        this.loginId = loginId;
     }
 
-    public String getTitle() {
-        return title;
-    }
+    public Long getUserId() { return userId; }
 
-    public String getContent() {
-        return content;
-    }
+    public String getTitle() { return title; }
 
-    public String getLoginId() {
-        return loginId;
-    }
+    public String getContent() { return content; }
+
 }

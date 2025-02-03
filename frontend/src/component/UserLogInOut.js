@@ -8,14 +8,14 @@ const UserLogInOut = (props) => {
     const handleLogOut = () => {
 
         props.setUserData({
-            loginId : '',
+            id : 0,
             username : ''
         });
 
         navigate('/');
     }
 
-    if (props.loginId !== '') {
+    if (props.id !== 0) {
         return (
             <>
                 <Link to='/'>홈</Link>

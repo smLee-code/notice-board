@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 public class PostDto {
 
     private Long id;
+    private Long userId;
     private String username;
     private String title;
     private String content;
@@ -14,8 +15,9 @@ public class PostDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public PostDto(Long id, String username, String title, String content, Long views, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public PostDto(Long id, Long userId, String username, String title, String content, Long views, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
+        this.userId = userId;
         this.username = username;
         this.title = title;
         this.content = content;
@@ -29,6 +31,7 @@ public class PostDto {
     public static PostDto fromEntity(Post post) {
         return new PostDto(
                 post.getId(),
+                post.getUser().getId(),
                 post.getUser().getUsername(),
                 post.getTitle(),
                 post.getContent(),
@@ -40,6 +43,8 @@ public class PostDto {
 
     // Getter
     public Long getId() { return id; }
+
+    public Long getUserId() { return userId; }
 
     public String getUsername() { return username; }
 

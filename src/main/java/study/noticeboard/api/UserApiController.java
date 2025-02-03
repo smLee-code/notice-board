@@ -55,7 +55,8 @@ public class UserApiController {
             );
 
             Map<String, Object> response = new HashMap<>();
-            response.put("loginId", user.getLoginId());
+
+            response.put("id", user.getId());
             response.put("username", user.getUsername());
 
             return ResponseEntity.ok(response);
